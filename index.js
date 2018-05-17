@@ -14,6 +14,34 @@ class EthLawyer {
     this.loadAccounts();
   }
 
+  canAfford(eth) {
+    return this.canAffordWei(eth * 10**18);
+  }
+
+  //note that user may still have insufficent eth for gas.
+  //eth-lawyer does not take this into account, this way
+  //you can show the user affordable options
+  //and they can observe the not enough gas in a transaction
+
+  canAffordWei(wei) {
+    let address = this.lastAddress;
+    return new Promise(function(resolve, reject) {
+      if (!address) {
+        reject("Not signed in to Metamask");
+        return;
+      }
+
+      window.web3.eth.getBalance(address, function(a, balance) {
+        let amount = balance.toNumber();
+        if (amount >= wei) {
+          resolve(amount);
+        } else {
+          reject(amount);
+        }
+      });
+    });
+  }
+
   loadContract(address, abi) {
     let MyContract = web3.eth.contract(abi);
     this.contract = MyContract.at(address);  
