@@ -1,13 +1,17 @@
 const PubSub = require('pubsub-js');
 
 class EthLawyer {
-  constructor(address, abi) {
-    let web3 = window.web3;
+  constructor(options) {
+    if (options) {
+      if (options.spam) {
+        this.spam = true;
+      }
 
-    if (address && abi) {
-      this.loadContract(address, abi);  
-    } else {
-      console.log("Warning: EthLawyer initiated without address + abi. EthLawyer will still publish metamask account changes.");
+      if (options.address && options.abi) {
+        this.loadContract(options.address, options.abi);  
+      } else {
+        console.log("Warning: EthLawyer initiated without address + abi. EthLawyer will still publish metamask account changes.");
+      }
     }
 
     this.lastAddress = null;
@@ -47,6 +51,10 @@ class EthLawyer {
     this.contract = MyContract.at(address);  
   }
 
+  shouldAnnounceAccount(address) {
+    return (address != this.lastAddress || this.spam);
+  }
+
   loadAccounts() {
     let web3 = window.web3;
     if (web3) {
@@ -59,7 +67,10 @@ class EthLawyer {
         }
       }.bind(this));  
     } else {
-      PubSub.publish('eth-lawyer-account', {address: null, lastAddress: this.lastAddress, hasMetamask: false});
+      if (this.shouldAnnounceAccount(null)) {
+        PubSub.publish('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: false});  
+      }
+      
       this.lastAddress = null;
     }
 
@@ -67,11 +78,14 @@ class EthLawyer {
   }
 
   accountLoaded(address) {
-    if (!address) {
-      PubSub.publish('eth-lawyer-account', {address: null, lastAddress: this.lastAddress, hasMetamask: true});
-    } else {
-      PubSub.publish('eth-lawyer-account', {address: address, lastAddress: this.lastAddress, hasMetamask: true});
+    if (this.shouldAnnounceAccount(address)) {
+      if (!address) {
+        PubSub.publish('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: true});
+      } else {
+        PubSub.publish('eth-lawyer-account', {lawyer: this, address: address, lastAddress: this.lastAddress, hasMetamask: true});
+      }
     }
+    
     this.lastAddress = address;
   }
 }
