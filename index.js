@@ -88,6 +88,31 @@ class EthLawyer {
     
     this.lastAddress = address;
   }
+
+  filePaperworkWei(functionName, functionParams, wei=0) {
+    return new Promise(function(resolve, reject) {
+      let callback = function (error, result) {
+        if (!error) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      }
+
+      if (amount) {
+        let payParams = {from: this.lastAddress, value: amount};
+        functionParams.push(payParams);
+      }
+
+      functionParams.push(callback);
+
+      this.contract[functionName](...functionParams);
+    });
+  }
+
+  filePaperwork(functionName, functionParams, amount = 0) {
+    this.filePaperwork(functionName, functionParams, amount * 10**18);
+  }
 }
 
 module.exports = EthLawyer;
