@@ -34,7 +34,7 @@ class EthLawyer {
     if (!address) {
       Pubsub.publish('eth-lawyer-account', {address: null, lastAddress: this.lastAddress, hasMetamask: true});
     } else {
-      PubSub.publish('eth-lawyer-account', {address: address, lastAddress: this.lastAddress, hasMetamask: true);
+      PubSub.publish('eth-lawyer-account', {address: address, lastAddress: this.lastAddress, hasMetamask: true});
     }
     this.lastAddress = address;
   }
