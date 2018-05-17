@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "description": "Conveniently interact with Ethereum Smart Contracts.",
   "main": "index.js",
-  "keywords": [
-    "ethereum"
-  ],
   "author": "/u/quantumproductions_ <twitter.com/quantumpotato> (http://github.com/quantumproductions)",
   "license": "TBD",
   "dependencies": {
     "pubsub-js": "^1.6.0"
-  }
+  },
+  "devDonationAddress": "0x2c3b0F6E40d61FEb9dEF9DEb1811ea66485B83E7",
+  "keywords" : ["javascript", "ethereum", "web3", "authentication", "metamask", "smart contract"],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:QuantumProductions/eth-lawyer.git"
+    },
+  "homepage": "git@github.com:QuantumProductions/eth-lawyer.git"
 }
