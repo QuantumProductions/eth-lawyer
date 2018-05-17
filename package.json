@@ -1,0 +1,14 @@
+{
+  "name": "eth-lawyer",
+  "version": "0.0.1",
+  "description": "Conveniently interact with Ethereum Smart Contracts.",
+  "main": "index.js",
+  "keywords": [
+    "ethereum"
+  ],
+  "author": "/u/quantumproductions_ <twitter.com/quantumpotato> (http://github.com/quantumproductions)",
+  "license": "TBD",
+  "dependencies": {
+    "pubsub-js": "^1.6.0"
+  }
+}
