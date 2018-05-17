@@ -3,12 +3,20 @@ const PubSub = require('pubsub-js');
 class EthLawyer {
   constructor(address, abi) {
     let web3 = window.web3;
-    
-    let MyContract = web3.eth.contract(abi);
-    this.contract = MyContract.at(address);
+
+    if (address && abi) {
+      this.loadContract(address, abi);  
+    } else {
+      console.log("Warning: EthLawyer initiated without address + abi. EthLawyer will still publish metamask account changes.");
+    }
 
     this.lastAddress = null;
     this.loadAccounts();
+  }
+
+  loadContract(address, abi) {
+    let MyContract = web3.eth.contract(abi);
+    this.contract = MyContract.at(address);  
   }
 
   loadAccounts() {
