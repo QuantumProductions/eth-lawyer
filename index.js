@@ -31,7 +31,7 @@ class EthLawyer {
         }
       }.bind(this));  
     } else {
-      Pubsub.publish('eth-lawyer-account', {address: null, lastAddress: this.lastAddress, hasMetamask: false});
+      PubSub.publish('eth-lawyer-account', {address: null, lastAddress: this.lastAddress, hasMetamask: false});
       this.lastAddress = null;
     }
 
