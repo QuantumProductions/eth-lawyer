@@ -1,3 +1,5 @@
+const BigNumber = require('bignumber.js');
+
 class EthLawyer {
   constructor(options) {
     if (!options.callback) {
@@ -21,8 +23,9 @@ class EthLawyer {
     this.loadAccounts();
   }
 
-  canAfford(eth) {
-    return this.canAffordWei(eth * 10**18);
+  canAfford(eth) { //as integer or decimal
+    let one = new BigNumber(10 ** 18);
+    return this.canAffordWei(one.times(eth));
   }
 
   //note that user may still have insufficent eth for gas.
@@ -30,20 +33,19 @@ class EthLawyer {
   //you can show the user affordable options
   //and they can observe the not enough gas in a transaction
 
-  canAffordWei(wei) {
+  canAffordWei(wei) { //must be as a bignumber
     let address = this.lastAddress;
     return new Promise(function(resolve, reject) {
       if (!address) {
-        reject("Not signed in to Metamask");
+        reject(new BigNumber(0));
         return;
       }
 
       window.web3.eth.getBalance(address, function(a, balance) {
-        let amount = balance.toNumber();
-        if (amount >= wei) {
-          resolve(amount);
+        if (balance.greaterThanOrEqualTo(wei)) {
+          resolve(balance);
         } else {
-          reject(amount);
+          reject(balance);
         }
       });
     });
@@ -85,6 +87,7 @@ class EthLawyer {
       if (!address) {
         this.callback('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: true});
       } else {
+        this.lastAddress = address;
         this.callback('eth-lawyer-account', {lawyer: this, address: address, lastAddress: this.lastAddress, hasMetamask: true});
       }
     }

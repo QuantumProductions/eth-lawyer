@@ -3,7 +3,7 @@ const EthLawyer = require('eth-lawyer');
 var callback = function(event, data) {
   if (event == 'eth-lawyer-account') {
     if (data.address) {
-      let promise = data.lawyer.canAffordWei(5); //5 wei, could also do data.lawyer.canAfford(5) to check for 5 ETH
+      let promise = data.lawyer.canAfford(5); //in eth. to use wei, convert wei to BigNumber and call .canAffordWei
       promise.then(function(result) {
         console.log(result); //can afford, show to user
         //TODO: show prompt for buy
