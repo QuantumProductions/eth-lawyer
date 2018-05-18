@@ -1,17 +1,20 @@
-const PubSub = require('pubsub-js');
-
 class EthLawyer {
   constructor(options) {
-    if (options) {
-      if (options.spam) {
-        this.spam = true;
-      }
+    if (!options.callback) {
+      console.error("ERROR: EthLawyer created without callback. Pass {callback: function(event, data) {..} as one of the key value pairs to the options parameter to the EthLawyer Constructor.");
+      return;
+    }
 
-      if (options.address && options.abi) {
-        this.loadContract(options.address, options.abi);  
-      } else {
-        console.log("Warning: EthLawyer initiated without address + abi. EthLawyer will still publish metamask account changes.");
-      }
+    this.callback = options.callback;
+
+    if (options.spam) {
+      this.spam = true;
+    }
+
+    if (options.address && options.abi) {
+      this.loadContract(options.address, options.abi);  
+    } else {
+      console.warn("Warning: EthLawyer initiated without address + abi. EthLawyer will still publish metamask account changes.");
     }
 
     this.lastAddress = null;
@@ -68,7 +71,7 @@ class EthLawyer {
       }.bind(this));  
     } else {
       if (this.shouldAnnounceAccount(null)) {
-        PubSub.publish('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: false});  
+        this.callback('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: false});  
       }
       
       this.lastAddress = null;
@@ -80,9 +83,9 @@ class EthLawyer {
   accountLoaded(address) {
     if (this.shouldAnnounceAccount(address)) {
       if (!address) {
-        PubSub.publish('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: true});
+        this.callback('eth-lawyer-account', {lawyer: this, address: null, lastAddress: this.lastAddress, hasMetamask: true});
       } else {
-        PubSub.publish('eth-lawyer-account', {lawyer: this, address: address, lastAddress: this.lastAddress, hasMetamask: true});
+        this.callback('eth-lawyer-account', {lawyer: this, address: address, lastAddress: this.lastAddress, hasMetamask: true});
       }
     }
     
