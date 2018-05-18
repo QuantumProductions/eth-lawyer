@@ -19,12 +19,13 @@ class EthLawyer {
       console.warn("Warning: EthLawyer initiated without address + abi. EthLawyer will still publish metamask account changes.");
     }
 
-    this.lastAddress = null;
     this.loadAccounts();
   }
 
   canAfford(eth) { //as integer or decimal
+    window.bn = BigNumber;
     let one = new BigNumber(10 ** 18);
+    window.one = one;
     return this.canAffordWei(one.times(eth));
   }
 
@@ -57,6 +58,10 @@ class EthLawyer {
   }
 
   shouldAnnounceAccount(address) {
+    if (!this.firstAnnounce) {
+      this.firstAnnounce = true;
+      return true;
+    }
     return (address != this.lastAddress || this.spam);
   }
 
@@ -91,7 +96,7 @@ class EthLawyer {
         this.callback('eth-lawyer-account', {lawyer: this, address: address, lastAddress: this.lastAddress, hasMetamask: true});
       }
     }
-    
+
     this.lastAddress = address;
   }
 
