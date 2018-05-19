@@ -6,9 +6,9 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4",
-    "eth-lawyer": "0.0.5",
+    "eth-lawyer": "0.0.13",
     "pubsub-js": "^1.6.0",
-    "bignumber": "5.0.0"
+    "bignumber.js": "7.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

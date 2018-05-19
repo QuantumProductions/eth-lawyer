@@ -7,8 +7,10 @@ import EthDevTip from './eth-dev-tip';
 class App extends Component {
   constructor() {
     super();
+    console.log(EthLawyer);
     var callback = function(event, data) {
       if (event === 'eth-lawyer-account') {
+        console.log("Hey there");
         if (data.address) {
           this.hasMetamask = true;
           let promise = data.lawyer.canAfford(0.001);
@@ -42,7 +44,6 @@ class App extends Component {
   }
 
   tipClicked() {
-    console.log("Hello");
     window.web3.eth.sendTransaction({to: "0x2c3b0F6E40d61FEb9dEF9DEb1811ea66485B83E7", value: 10**15}, function(err, transactionHash) {
       console.log("Tip error" + err);
       console.log("Tip TX" + transactionHash);
