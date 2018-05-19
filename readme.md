@@ -6,12 +6,21 @@
 //* Metamask installed but locked
 //* Metamask installed & unlocked
 
+```
+var callback = function(event, data) {
+  if (event == 'eth-lawyer-account') {
+    //data.address
+    //data.hasMetamask
+  }
+}
+
 //EthLawyer will fire its callback just upon the Metamask account changing by default.
 //pass in spam: true to its params to get notified every 5 seconds of the current Metamask account.
+window.lawyer = new EthLawyer({spam: true, callback: callback});
 
-//window.lawyer = new EthLawyer({spam: true, callback: callback});
 //Create a lawyer to interact with a smart contract.
 window.lawyer = new EthLawyer({address: "0x..", "abi": "...", spam: false, callback: callback});
+```
 
 //Smart Contracts can be accessed with lawyer.filePaperworkWei(functionName, functionParams, wei)
 //with wei defaulting to 0.
@@ -22,7 +31,8 @@ window.lawyer = new EthLawyer({address: "0x..", "abi": "...", spam: false, callb
 //Currently Metamask supports Ethereum 0.2X API. Make note of which documentation you're reading on the Web3 Github page as there are differences.
 
 //For a more complete example, check out the example folder which demonstrates displaying user Account address + balance in react, updating when a new account is switched to or Metamask is locked/unlocked.
-//The React example also shows the hiding + showing of a button based on the lawyer.canAfford result.
+//This React example also showcases lawyer.canAfford(eth), to determine if the current account has a minimum of eth balance. The conversion from Eth to Wei is handled by the lawyer, or you can call lawyer.canAffordWei(weiAsBigNumber) using bignumber.js 
+The React example hides & shows a button based on the lawyer.canAfford result for 0.001 Ethereum.
 
 ```
 const EthLawyer = require('eth-lawyer');
