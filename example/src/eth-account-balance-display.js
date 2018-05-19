@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 
 class AccountBalance extends Component {
   render() {
-    let address = "Unlock Metamask to view account balance.";
-    console.log(JSON.stringify(this.props));
+    let address = "0x";
     if (this.props.address) {
       address = this.props.address;
     }
 
-    let balance;
-    if (this.props.ethString || this.props.ethString === "0") {
+    let balance = "Unlock Metamask to view account balance.";
+    if (this.props.ethString) {
       balance = this.props.ethString;
     }
 

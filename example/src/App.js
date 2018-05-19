@@ -2,29 +2,25 @@ import React, { Component } from 'react';
 import './App.css';
 import EthLawyer from 'eth-lawyer';
 import AccountBalance from './eth-account-balance-display';
+import EthDevTip from './eth-dev-tip';
 
 class App extends Component {
   constructor() {
     super();
     var callback = function(event, data) {
-      console.log(data.lawyer);
-
-      console.log(data);
-      // return;
-
       if (event === 'eth-lawyer-account') {
         if (data.address) {
-          console.log("address" + data.address);
-          let promise = data.lawyer.canAfford(1);
+          this.hasMetamask = true;
+          let promise = data.lawyer.canAfford(0.001);
           let that = this;
           promise.then(function(result) {
             window.res = result;
-            console.log(result.toString());
             data.ethString = result.dividedBy(10 ** 18).toString();
-            data.canAffordOneEth = true;
+            data.canAffordOneThousandthEth = true;
             that.setState(data);
           }, function(result) {
             window.res = result;
+            data.canAffordOneThousandthEth = false;
             console.log("Insufficient Funds" + result.toString());
             if (result) {
               data.ethString = result.dividedBy(10 ** 18).toString();  
@@ -34,15 +30,30 @@ class App extends Component {
 
             that.setState(data);
           });
+        } else {
+          this.hasMetamask = data.hasMetamask;
+          this.setState({address: data.address, ethString:""});
         }  
       }
-    }
+    }.bind(this);
       
 
-    window.lawyer = new EthLawyer({callback: callback.bind(this)});   
+    window.lawyer = new EthLawyer({spam: true, callback: callback});   
+  }
+
+  tipClicked() {
+    console.log("Hello");
+    window.web3.eth.sendTransaction({to: "0x2c3b0F6E40d61FEb9dEF9DEb1811ea66485B83E7", value: 10**15}, function(err, transactionHash) {
+      console.log("Tip error" + err);
+      console.log("Tip TX" + transactionHash);
+    });
   }
 
   render() {
+    if (!this.hasMetamask) {
+      return <div>Metamask required</div>
+    }
+
     let address;
     if (this.state && this.state.address) {
       address = this.state.address;
@@ -52,9 +63,16 @@ class App extends Component {
     if (this.state && this.state.ethString) {
       ethString = this.state.ethString;
     }
+
+    let affordThousandth;
+    if (this.state && this.state.canAffordOneThousandthEth) {
+      affordThousandth = true;
+    }
+
     return (
       <div className="App">
         <AccountBalance address={address} ethString={ethString} />
+        <EthDevTip tipClicked={this.tipClicked.bind(this)} afford={affordThousandth}/>
       </div>
     );
   }
