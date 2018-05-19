@@ -30,11 +30,12 @@ Smart Contracts can be accessed with
 
 ```
 lawyer.filePaperworkWei(functionName, functionParams, wei)
+//returns a Promise, with success being the transaction hash.
 ``` 
 
 with wei defaulting to 0.
 
-You cando lawyer.contract and use the web3 API directly.
+You can do lawyer.contract and use the web3 API directly.
 
 I recommend you read the index.js here. This is a simple module and it's good to know what it's doing under the hood.
 
