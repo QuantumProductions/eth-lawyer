@@ -8,7 +8,7 @@
     "react-scripts": "1.1.4",
     "eth-lawyer": "0.0.13",
     "pubsub-js": "^1.6.0",
-    "bignumber.js": "7.1.0"
+    "bignumber.js": "5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
