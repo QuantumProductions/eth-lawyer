@@ -1,6 +1,6 @@
 {
   "name": "eth-lawyer",
-  "version": "0.0.20",
+  "version": "1.0.0",
   "description": "Detect Metamask login, logout & Conveniently interact with Ethereum Smart Contracts.",
   "main": "index.js",
   "author": "/u/quantumproductions_ <twitter.com/quantumpotato> (http://github.com/quantumproductions)",
