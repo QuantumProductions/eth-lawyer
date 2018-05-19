@@ -1,3 +1,4 @@
+//https://github.com/QuantumProductions/eth-lawyer
 //Detect Metamask login, logout & Conveniently interact with Ethereum Smart Contracts.
 //Most Smart Contract web apps require detection of Metamask accounts.
 //EthLawyer handles the boilerplate of detecting: 
