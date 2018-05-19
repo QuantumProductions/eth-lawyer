@@ -26,9 +26,15 @@ window.lawyer = new EthLawyer({spam: true, callback: callback});
 window.lawyer = new EthLawyer({address: "0x..", "abi": "...", spam: false, callback: callback});
 ```
 
-Smart Contracts can be accessed with lawyer.filePaperworkWei(functionName, functionParams, wei) with wei defaulting to 0.
+Smart Contracts can be accessed with 
 
-You could do lawyer.contract and use the web3 API directly.
+```
+lawyer.filePaperworkWei(functionName, functionParams, wei)
+``` 
+
+with wei defaulting to 0.
+
+You cando lawyer.contract and use the web3 API directly.
 
 I recommend you read the index.js here. This is a simple module and it's good to know what it's doing under the hood.
 
