@@ -55,6 +55,7 @@ class EthLawyer {
   loadContract(address, abi) {
     let MyContract = web3.eth.contract(abi);
     this.contract = MyContract.at(address);  
+    console.log("Saving contract" + this.contract);
   }
 
   shouldAnnounceAccount(address) {
@@ -101,23 +102,24 @@ class EthLawyer {
   }
 
   filePaperworkWei(functionName, functionParams, wei=0) {
+    let lawyer = this;
     return new Promise(function(resolve, reject) {
       let callback = function (error, result) {
         if (!error) {
           resolve(result);
         } else {
+          console.log("ERROR" + error);
           reject(error);
         }
       }
-
-      if (amount) {
-        let payParams = {from: this.lastAddress, value: amount};
+      if (wei) {
+        let payParams = {from: lawyer.lastAddress, value: wei};
+        console.log("payParams" + payParams);
         functionParams.push(payParams);
       }
 
       functionParams.push(callback);
-
-      this.contract[functionName](...functionParams);
+      lawyer.contract[functionName](...functionParams);
     });
   }
 
