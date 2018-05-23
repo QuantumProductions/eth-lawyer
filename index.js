@@ -124,7 +124,32 @@ class EthLawyer {
   }
 
   filePaperwork(functionName, functionParams, amount = 0) {
-    this.filePaperwork(functionName, functionParams, amount * 10**18);
+    let num = new BigNumber(amount * (10 ** 18));
+    return this.filePaperworkWei(functionName, functionParams, Number(num.valueOf()));
+  }
+
+  sign(statement) {
+    let from = this.lastAddress;
+    let params = [statement, from];
+    let method = 'eth_signTypedData';
+    
+    return new Promise(function(resolve, reject) {
+      web3.currentProvider.sendAsync({
+        method: method,
+        params: params,
+        from: from
+      }, function (err, result) {
+        console.log("err" + err);
+        console.log("result" + JSON.stringify(result));
+        if (err) {
+          console.log("Yes, err is valid")
+          reject(err);
+          return;
+        }
+        let data = result.result;
+        resolve(data);
+      });    
+    });
   }
 }
 
