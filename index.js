@@ -51,8 +51,13 @@ class EthLawyer {
       });
     });
   }
-
+ 
   loadContract(address, abi) {
+    let web3 = window.web3;
+    if (!web3) {
+      console.warn("No web3 detected. Get Metamask: https://metamask.io/");
+      return;
+    }
     let MyContract = web3.eth.contract(abi);
     this.contract = MyContract.at(address);  
     console.log("Saving contract" + this.contract);
