@@ -35,11 +35,11 @@ lawyer.contract
 or you can call and get a Promise with:
 
 ```
-lawyer.filePaperworkWei(functionName, functionParams, wei)
+lawyer.filePaperworkWei(functionName, functionParams, wei, gasPrice)
+//wei is optional
+//gasPrice is optional
 //returns a Promise, with success being the transaction hash.
 ``` 
-
-with wei defaulting to 0.
 
 I recommend you read the index.js here. This is a simple module and it's good to know what it's doing under the hood.
 

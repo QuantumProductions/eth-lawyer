@@ -51,7 +51,7 @@ class EthLawyer {
       });
     });
   }
- 
+
   loadContract(address, abi) {
     let web3 = window.web3;
     if (!web3) {
@@ -106,7 +106,7 @@ class EthLawyer {
     this.lastAddress = address;
   }
 
-  filePaperworkWei(functionName, functionParams, wei=0) {
+  filePaperworkWei(functionName, functionParams, wei=0, gasPrice=0) {
     let lawyer = this;
     return new Promise(function(resolve, reject) {
       let callback = function (error, result) {
@@ -119,6 +119,14 @@ class EthLawyer {
       }
       if (wei) {
         let payParams = {from: lawyer.lastAddress, value: wei};
+        console.log("Gas price?" + gasPrice);
+        window.gasPrice = gasPrice;
+        window.bn = BigNumber;
+        if (gasPrice) {
+          let gasPriceBigNum = new BigNumber(gasPrice * 1000000000); //Gwei
+          payParams["gasPrice"] = gasPriceBigNum;
+          console.log("Assigned gas price");
+        }
         console.log("payParams" + payParams);
         functionParams.push(payParams);
       }
@@ -128,9 +136,9 @@ class EthLawyer {
     });
   }
 
-  filePaperwork(functionName, functionParams, amount = 0) {
+  filePaperwork(functionName, functionParams, amount=0, gasPrice=0) {
     let num = new BigNumber(amount * (10 ** 18));
-    return this.filePaperworkWei(functionName, functionParams, Number(num.valueOf()));
+    return this.filePaperworkWei(functionName, functionParams, Number(num.valueOf()), gasPrice);
   }
 
   sign(statement) {
@@ -155,6 +163,7 @@ class EthLawyer {
         resolve(data);
       });    
     });
+
   }
 }
 
